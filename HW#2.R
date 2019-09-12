@@ -34,3 +34,15 @@ gerbil<-50
 lizard<-1
 duck<-25
 if (cat>lizard) "cats rule lizards drool" else "Lizards are better than wizards"
+switchero.if.then <- function(x) {
+  if (x == "a")
+    "camel"
+  else if (x == "b")
+    "bear"
+  else if (x == "c")
+    "camel"
+  else
+    "moose"
+}
+str("C:/Users/George/Desktop/Intro to R/fish_data.Rdata")
+str(fish)
