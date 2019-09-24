@@ -112,3 +112,60 @@ head(d$hour)
 head(d$Time)
 d$min<-as.numeric(str_sub(d$Time,4,5))
 d$sec<-as.numeric(str_sub(d$Time,7,11))
+##Exam Review:
+#> r.array<-array(data=1:24,dim=c(3,4,2))
+> 
+  > r.array
+, , 1
+
+[,1] [,2] [,3] [,4]
+[1,]    1    4    7   10
+[2,]    2    5    8   11
+[3,]    3    6    9   12
+
+, , 2
+
+[,1] [,2] [,3] [,4]
+[1,]   13   16   19   22
+[2,]   14   17   20   23
+[3,]   15   18   21   24
+
+> d.array[2,2,1]
+Error: object 'd.array' not found
+> r.array[2,2,1]
+
+n.rows(r.array)
+##############################
+#Notes 9-23-19
+date<-date[2]
+library(stringr)
+mm<- str_sub(string = date, start =1, end=2)
+dd <- str_sub(string = date, start =4, end =5)
+dd<- as.numeric(dd)
+yy<- str_sub(string = date, start =7, end =8)
+dateNextDay <- str_c(mm,as.character(dd+1),yy, sep="/")
+dateNextDay
+d$hour <- as.numeric(str_sub(string = d$Time, start=1, end=2))
+d$minute<- as.numeric(str_sub(string= d$Time, start =4, end = 5))
+d$sec<- as.numeric(str_sub(string= d$Time, start= -5, end = -1))
+##Didn't follow what happened above, couldn't load data! (TRY TO REDO LATER)
+date<-str_c(mm,dd,yy, sep = "/")
+date
+#Above we remade our date that we took apart earlier
+#To edit? dates and times in R google the dates and times in R to get a chart of decimal seconds (%s), 4 digit year(%Y), ect
+d$dateTime<- as.POSIXct(strptime(x=d$dateTime, format="%m/%d/%y %H:%M:%S", tz="America/New_York"))
+d$dateTime<-d$dateTime - time.zone.change * 3600
+#Not sure what we're trying to do in the above
+#If you're missing your seconds, you can add in :
+options("digits.secs"=3)
+#this turns on the seconds 
+#you will need to run this line before running lines 152, 156 and 157
+
+###Loading in different file types:
+install.packages("xlsx")
+library("xlsx")
+read.csv(file="Aurelia_SEAMAP_2012-2018_30minCell.csv")
+getwd
+getwd()
+setwd("C:/Users/George/Desktop/Intro to R/Biol595")
+###Cant load this data set in, may need to change working directory
