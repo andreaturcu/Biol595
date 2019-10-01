@@ -169,3 +169,59 @@ getwd
 getwd()
 setwd("C:/Users/George/Desktop/Intro to R/Biol595")
 ###Cant load this data set in, may need to change working directory
+#######NOTES 9-30-19#######
+load("fish_data.Rdata")
+f<-fish
+#Subsetting
+fd<-f[f$depth_fac == "Deep",]
+fd2 <- subset(x = f, depth_fac == "Deep")
+fd3 <- f[f$depth_fac == "shallow",]
+#The above kind of subsetting is called indexing by condition, to only have the number of columns that we want we can add select=c("transect, "area_fac") to the subset one!
+fd
+fd2
+fd3
+fd4 <- f[f$area_fac == "East",]
+fd4
+fd5 <- f[f$type_fac == "Patch",]
+fd5
+#Another way to subset (by filter):
+library(dplyr)
+fd6 <- filter(.data = f, depth_fac == "Deep")
+#######################Need to add dplyr library!!!
+fd7 <-f[which(f$depth_fac == 'Deep' & f$area_fac == "East" & f$yr_fac == "2014""),]
+#Need dplyr to do above, try again later!
+#subset &then combine using rowbind (rbind function)
+#when doing rbind you need to make sure that the number of variables is the same and they're in the same order
+#if you want to combine d1 and d2 back into a single data frame:
+d3 <- rbind(d1,d2)
+d1 <- f[wich(f$depth_fac == 'Deep' & f$area_fac == "East"),]
+d2<- f[which(f$depth_fac == 'Shallow' & f$area_fac == "West"),]
+#Combine data frames with separate columns into a single data frame:
+c1 <- subset(x=f, depth_fac == "Deep", select = c("transect.id","area_fac"))
+c2 <- subset(x=f, depth_fac == "Deep",
+             select = c("depth_fac", "parcel.length.m", "group")) 
+c3<- cbind(c1,c2)
+c3
+head(c3)
+#can also use merge and join to get things lined up properly(ensuring that observations from one data frame are connected with observations from the second correctly):
+m1 <- subset(x=f, depth_fac == "Deep",select = c("transect.id","area_fac"))
+m2 <- subset(x=f, depth_fac == "Deep",select = c("depth_fac","parcel.length.m","group"))
+##Merge (allows you to merge data that may have headers that have different names in the two data sets e.g. altitude and elevation (this is the by.x, by.y))
+#The all part of the following tells you how things in each adata set are rfoing to be lined up
+mt <- merge(x = m1, y = m2, by =c("transect.id","seq"),all.x = T, no.dups = T)
+
+#join
+mj <- dplyr::right_join(x=m1, y=m2, by =c('transect.id'))
+head(m2) 
+#below I'm trying to add numbers to the rows so they can find it...smth, I'm not sure...
+m2$seq <- seq(1,nrow(m2), by = 1)
+m1$seq <- seq(1,nrow(m1), by =1)
+nrow(m1)+nrow(m2)
+
+
+#creat a sequence of data
+m2$seq <- seq(from =1, to =nrow(m2), by=1)
+v<-seq(5, 20, 0.5)
+vc <- cut(x=v, breaks =seq(5,20,0.5), include.lowest = T)
+ #####Today we've gone over subsetting, used merge and join, we talked about a cut function to bin your data
+ 
