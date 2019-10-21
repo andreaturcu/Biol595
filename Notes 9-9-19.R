@@ -428,3 +428,62 @@ qv
 #melt and cast ----
 library(reshape2)
 m= melt(data =df, idvars=c('teamID'), measure.vars =c('H', 'AB'))
+###### Notes 10-21-19
+#for loops: allows you to perform a function over and over and return values, is similar to ddply
+#1 create a function that does temperature conversions automatically
+t<-data.frame(f_deg=seq(0,100,1))
+t$c_deg <- NA
+t$K_deg <- NA
+for(i in 1:nrow(t)){
+  t[i,]$c_deg <- (t[i,]$f_deg - 32) *(9/5)
+  t[i,]$K_deg <- (t[i,]$c_deg + 273.15)
+ }
+t
+i=1  
+t[i,]
+#then we reran the 'for loop' above and then type just 't' and the whole output come out with all the rows with the celcius and kelvin filled in
+t2<-data.frame(f_deg=seq(0,100,1))
+t2$c_deg <- NA
+t2$K_deg <- NA
+t2$rel_temp <- NA
+for(i in 1:nrow(t)){
+  t[i,]$c_deg <- (t2[i,]$f_deg - 32) *(9/5)
+  t[i,]$K_deg <- (t2[i,]$c_deg + 273.15)
+  t[i,]$rel_temp <- ifelse(test = t2[i,]$c_deg < 0, yes - "cold", no - "not cold")
+  
+}
+t2
+t3<-data.frame(f_deg=seq(0,100,1))
+t3$c_deg <- NA
+t3$K_deg <- NA
+t3$rel_temp <- NA
+goldilocks <- function (x){
+  if(x<=0)
+    t3[i,]$rel_temp<-"frozen"
+  else if (x>0 & x<=50)
+    t3[i,]$rel_temp <- "cold"
+  else if(x>50 & x <= 70)
+    t3[i,]$rel_temp<- "warm"
+  else
+    t3[i,]$rel_temp<-"hot"
+}
+for(i in 1:nrow(t3)){
+  t3[i,]$c_deg <- (t3[i,]$f_deg - 32) *(9/5)
+  t3[i,]$K_deg <- (t3[i,]$c_deg + 273.15)
+  t3[i,]$rel_temp <-goldilocks (x=t3[i,]$c_deg)
+  
+  
+}
+t3
+#now make your own dataframe and make a for loop that converts from milligrams to grams:
+y<- seq(1,10,0.5)
+x<-seq(1,20,1)
+
+d<- data.frame(interation =seq(1,10,0.5))
+
+for(i in 1:length(y)){
+  for (k in 1:length(x)){
+    d$output <-y [i] + x[k]
+}    
+#above is a nested for loop
+
