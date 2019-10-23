@@ -487,3 +487,48 @@ for(i in 1:length(y)){
 }    
 #above is a nested for loop
 
+  
+#########Notes 10/23/19
+  
+#The difference between ddply and for loops is that with for loops the function iterates through the list and applies that iteration through the data. Kelly says that you go row by row with for loops.
+#You can do for loops for differenct data types than data frames. You can do matrix, arrays, lists
+#Kelly created an empty list called patch.list. Then you run your for loop and you get some output called p.mid.
+  #then you want to save that output and turn that list into a dataframe
+  #to do this use do.call- use this to go through a list and apply a function to it
+  
+#Move on to plotting(with non-ggpolt):
+library(ggplot2)
+fish.deep<-fish[fish$depth_fac == "Deep",]
+plot(x =fish.deep$parcel.start.lon, y= fish.deep$parcel.start.lat)
+hist(log10(fish$parcel.density.m3))
+
+#Plotting with ggplot:
+ggplot(data= mpg, aes(x=displ, y=hwy)) + geom_point()
+#To add aestetics like color:
+ggplot(data= mpg, aes(x=displ, y=hwy)) + geom_point(colour = "blue")
+head(mpg)
+unique(mpg$class)
+#now we want to get our colors to correspond to car types:
+ggplot(data= mpg, aes(x=displ, y=hwy, colour= class)) + geom_point()
+ggplot(data= mpg, aes(x=displ, y=hwy, colour = year)) + geom_point()
+unique(mpg$year)
+#We can put our own colors in from the list she posted on moodle(change to scale_color from scale_fill):
+ggplot(data= mpg, aes(x=displ, y=hwy, colour = class)) + geom_point() + scale_color_manual(values =c("firebrick", "dodgerblue", "darkgreen","goldenrod","cornsilk2","chocolate2","deeppink1"))
+#change to geom_line to get a line plot instead
+
+#if you want to have your plot more spread out and have them broken up into different panels, can use facetgraph
+#facets-----
+ggplot(data =mpg,aes(x = displ, y= hwy, colour = class)) + geom_line() + facet_wrap(~class,ncol=1)
+
+#add a smoother:
+ggplot(data =mpg, aes(x= displ, y = hwy)) + geom_point() + geom_smooth()
+#above- we don't need to put the data into smooth() because it knows to pull from the original data set
+
+#To add a regression line:
+ggplot(data =mpg, aes(x= displ, y = hwy)) + geom_point() + geom_smooth(method="lm")
+
+#histogram ----
+ggplot(data=mpg, aes(displ, fill=drv)) +geom_histogram()
+ggplot(data=mpg, aes(displ, fill=drv)) +geom_histogram(binwidth=0.5)
+
+ggplot(data=mpg, aes(displ, color=drv)) +geom_freqpoly(binwidth= 0.5)
