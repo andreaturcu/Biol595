@@ -532,3 +532,61 @@ ggplot(data=mpg, aes(displ, fill=drv)) +geom_histogram()
 ggplot(data=mpg, aes(displ, fill=drv)) +geom_histogram(binwidth=0.5)
 
 ggplot(data=mpg, aes(displ, color=drv)) +geom_freqpoly(binwidth= 0.5)
+
+########Notes 10-28-19
+library(ggplot2)
+#one geom:
+data("economics")
+e<-economics
+unemploy<-ggplot(data=e,aes(x=date,y=unemploy)) + 
+  geom_line()
+unemploy
+
+#multiple geoms----
+data("presidential")
+pres<-presidential
+
+ggplot(e) +
+  geom_line(aes(x=date, y=unemploy)) +
+  geom_rect(data = pres, aes(xmin=start,xmax=end, fill=party),ymin=-Inf,ymax=Inf,alpha=0.2) +
+  geom_vline(data=pres,aes(xintercept=as.numeric(start)),colour="grey50",alpha=0.5)+
+  geom_text(data=pres, aes(x=start, y=2500, label=name), size=3, vjust=0,hjust=0, nudge_x = 50)
+
+caption<-paste(strwrap("Unemployment rates in the U.S. have varied a lot over the years",40),collapse = "\n")
+yrng<-range(e$unemploy)
+xrng<-range(e$date)
+date<-as.Date("1960-01-01")
+
+ggplot(e) +
+  geom_line(data=e,aes(x=date, y=unemploy)) +
+  geom_rect(data = pres, aes(xmin=start,xmax=end, fill=party),ymin=-Inf,ymax=Inf,alpha=0.2) +
+  scale_fill_manual(values=c("dodgerblue","firebrick3")) +
+  geom_vline(data=pres,aes(xintercept=as.numeric(start)),colour="grey50",alpha=0.5)
+
+annotate("text",x=xrng[1], y=yrng[2],label=caption, hjust=0,vjust=1,size=4)
+
+##Got lost here after we added the date in, not sure what we did with this, also could not get the caption to show up! look at Kelly's code later.
+
+#using the 'ddply' function to create multiple plots -----
+load("C:/Users/George/Desktop/Intro to R/fish_data.Rdata")
+
+
+#work on making the plot Upasana proposed:
+#a stacked bar with group bar:
+library(tidyverse)
+fs<-fish %>% group_by(area_fac,depth_fac,yr_fac) %>% summarise(parcel.count =length(parcel.id))
+
+
+ggplot(fs) + 
+  geom_bar(aes(x= area_fac, y=parcel.count, fill= depth_fac), position="stack", stat="identity") +
+  facet_wrap(~area_fac)
+  
+
+
+
+
+
+
+
+
+
